@@ -2,6 +2,7 @@
 Main GUI workflow including all pages.
 """
 
+from nicegui import app as nicegui_app
 from nicegui import ui
 
 from cibmangotree.app import App
@@ -95,9 +96,11 @@ def gui_main(app: App):
         else:
             PlaceholderDashboard(session=gui_session).render()
 
+    nicegui_app.native.window_args["min_size"] = (1024, 710)
     ui.run(
         native=True,
         title="CIB Mango Tree",
         favicon="🥭",
         reload=False,
+        window_size=(1060, 720),
     )

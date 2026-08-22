@@ -66,7 +66,10 @@ class StartPage(GuiPage):
         ui.add_head_html("""
             <style>
                 .my-sticky-table {
-                    height: 310px;
+                /* Window height minus the page's fixed furniture (header, footer,
+                    padding, logo, button row = 488px). Re-measure if any of those
+                    change. Floor keeps the table usable at the minimum window size. */
+                    height: max(180px, calc(100vh - 496px));
                 }
                 .my-sticky-table thead tr th {
                     position: sticky;

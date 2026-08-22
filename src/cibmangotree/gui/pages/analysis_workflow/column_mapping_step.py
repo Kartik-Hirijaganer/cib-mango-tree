@@ -53,7 +53,11 @@ class ColumnMappingStep:
 
     def _build_column_card(self, input_col, user_columns, draft_column_mapping) -> None:
         """Build a single column mapping card."""
-        with ui.card().classes("w-52 p-4 no-shadow border border-gray-200"):
+        with (
+            ui.card()
+            .classes("p-4 no-shadow border border-gray-200")
+            .style("flex: 1 1 0; min-width: 160px")
+        ):
             with ui.row().classes("items-center gap-1"):
                 ui.label(input_col.human_readable_name_or_fallback()).classes(
                     "text-bold"

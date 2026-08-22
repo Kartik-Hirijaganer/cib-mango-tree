@@ -63,7 +63,9 @@ class AnalysisConfigAndRunPage(GuiPage):
                 f"Project '{self.session.current_project.display_name}' created successfully!"
             )
 
-        with self.centered_content(max_width="1200px", justify="start", padding="2rem"):
+        with self.centered_content(
+            max_width="1200px", justify="start", padding="2rem", height="auto"
+        ):
             with (
                 ui.stepper()
                 .props("horizontal animated")
