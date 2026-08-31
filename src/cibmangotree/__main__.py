@@ -18,7 +18,7 @@ def main() -> None:
 
     # clear Mark of the Web for Win .exe
     if sys.platform == "win32":
-        from src.cibmangotree.gui.utils import _remove_motw
+        from cibmangotree.gui.utils import _remove_motw
 
         _remove_motw()
 
