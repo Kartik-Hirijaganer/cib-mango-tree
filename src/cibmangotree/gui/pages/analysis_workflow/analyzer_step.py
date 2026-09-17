@@ -2,6 +2,7 @@ from nicegui import ui
 
 from cibmangotree.gui.components.toggle import ToggleButtonGroup
 from cibmangotree.gui.session import GuiSession
+from cibmangotree.gui.theme import TEXT_MUTED
 
 
 class AnalyzerSelectionStep:
@@ -17,7 +18,7 @@ class AnalyzerSelectionStep:
         analyzers = self.session.app.context.suite.primary_anlyzers
 
         if not analyzers:
-            ui.label("No analyzers available").classes("text-grey")
+            ui.label("No analyzers available").classes(TEXT_MUTED)
             return
 
         analyzer_options = {
@@ -48,7 +49,7 @@ class AnalyzerSelectionStep:
                                 backward=lambda text: analyzer_long_descriptions.get(
                                     text, DEFAULT_TEXT
                                 ),
-                            ).classes("text-grey")
+                            ).classes(TEXT_MUTED)
 
     def is_valid(self) -> bool:
         """Check if an analyzer is selected."""

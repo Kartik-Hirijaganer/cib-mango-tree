@@ -6,6 +6,12 @@ from cibmangotree.analyzer_interface import (
     ParamValue,
     TimeBinningValue,
 )
+from cibmangotree.gui.theme import (
+    CARD_PARAM,
+    ICON_INFO,
+    ROW_LABEL_ICON,
+    TEXT_MUTED,
+)
 
 
 class AnalysisParamsCard:
@@ -40,7 +46,7 @@ class AnalysisParamsCard:
         if not self.params:
             with ui.column().classes("w-full items-center"):
                 ui.label("This analyzer has no configurable parameters.").classes(
-                    "text-grey-7"
+                    TEXT_MUTED
                 )
             return
 
@@ -50,11 +56,11 @@ class AnalysisParamsCard:
 
     def _build_param_card(self, param: AnalyzerParam):
         """Build an individual card for a single parameter."""
-        with ui.card().classes("w-72 p-4 no-shadow border border-gray-200"):
-            with ui.row().classes("items-center gap-1"):
-                ui.label(param.print_name).classes("text-bold")
+        with ui.card().classes(CARD_PARAM):
+            with ui.row().classes(ROW_LABEL_ICON):
+                ui.label(param.print_name).classes("font-bold")
                 if param.description:
-                    with ui.icon("info").classes("text-grey-6 cursor-pointer"):
+                    with ui.icon("info").classes(ICON_INFO):
                         ui.tooltip(param.description)
 
             param_type = param.type

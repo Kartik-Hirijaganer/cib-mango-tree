@@ -1,6 +1,7 @@
 from nicegui import ui
 
 from cibmangotree.gui.session import GuiSession
+from cibmangotree.gui.theme import TEXT_MUTED
 
 
 class ManageProjectsDialog(ui.dialog):
@@ -30,7 +31,7 @@ class ManageProjectsDialog(ui.dialog):
 
             # Check if there are projects to display
             if not self.project_contexts:
-                ui.label("No projects found").classes("text-grey q-mb-md")
+                ui.label("No projects found").classes(f"{TEXT_MUTED} q-mb-md")
             else:
                 # Projects grid
                 self.grid = ui.aggrid(

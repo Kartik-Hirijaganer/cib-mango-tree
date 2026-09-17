@@ -10,6 +10,7 @@ from typing import Callable
 
 from nicegui import ui
 
+from cibmangotree.gui.theme import ICON_INFO
 from cibmangotree.importing.csv import CsvImportSession
 from cibmangotree.importing.excel import ExcelImportSession
 
@@ -80,7 +81,7 @@ class ImportOptionsDialog(ui.dialog):
         with ui.row().classes(ROW_LAYOUT):
             with ui.row().classes("items-center gap-1").style("min-width: 160px"):
                 ui.label("Column separator:").classes("text-base font-bold")
-                with ui.icon("info").classes("text-grey-6 cursor-pointer"):
+                with ui.icon("info").classes(ICON_INFO):
                     with (
                         ui.tooltip()
                         .classes("w-64")
@@ -107,7 +108,7 @@ class ImportOptionsDialog(ui.dialog):
         with ui.row().classes(ROW_LAYOUT):
             with ui.row().classes("items-center gap-1").style("min-width: 160px"):
                 ui.label("Quote character:").classes("text-base font-bold")
-                with ui.icon("info").classes("text-grey-6 cursor-pointer"):
+                with ui.icon("info").classes(ICON_INFO):
                     with (
                         ui.tooltip()
                         .classes("w-64")
@@ -134,7 +135,7 @@ class ImportOptionsDialog(ui.dialog):
         with ui.row().classes(ROW_LAYOUT):
             with ui.row().classes("items-center gap-1").style("min-width: 160px"):
                 ui.label("Has header:").classes("text-base font-bold")
-                with ui.icon("info").classes("text-grey-6 cursor-pointer"):
+                with ui.icon("info").classes(ICON_INFO):
                     with (
                         ui.tooltip()
                         .classes("w-64")
@@ -156,7 +157,7 @@ class ImportOptionsDialog(ui.dialog):
         with ui.row().classes(ROW_LAYOUT):
             with ui.row().classes("items-center gap-1").style("min-width: 160px"):
                 ui.label("Skip rows:").classes("text-base font-bold")
-                with ui.icon("info").classes("text-grey-6 cursor-pointer"):
+                with ui.icon("info").classes(ICON_INFO):
                     with (
                         ui.tooltip()
                         .classes("w-64")

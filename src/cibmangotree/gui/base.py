@@ -18,7 +18,7 @@ from pydantic import BaseModel, ConfigDict
 from cibmangotree.gui.components.exit_confirmation import ExitConfirmationDialog
 from cibmangotree.gui.routes import gui_routes
 from cibmangotree.gui.session import GuiSession
-from cibmangotree.gui.theme import gui_colors, gui_urls
+from cibmangotree.gui.theme import PAGE_BACKGROUND, gui_colors, gui_urls
 from cibmangotree.meta.get_version import get_version
 
 
@@ -103,12 +103,13 @@ class GuiPage(BaseModel, abc.ABC):
         the complete page with header, content, and footer.
 
         Lifecycle:
-        1. Setup colors
+        1. Setup colors and page surface
         2. Render header
         3. Render content (abstract - implemented by subclasses)
         4. Render footer
         """
         self._setup_colors()
+        self._setup_page_background()
         self._render_header()
         self.render_content()
         if self.show_footer:
@@ -140,6 +141,15 @@ class GuiPage(BaseModel, abc.ABC):
             accent=gui_colors.accent,
             cancel=gui_colors.cancel,
         )
+
+    def _setup_page_background(self) -> None:
+        """
+        Paint the page surface explicitly.
+
+        Without this the body is transparent and the page inherits whatever the
+        host canvas happens to be.
+        """
+        ui.query("body").style(f"background-color: {PAGE_BACKGROUND}")
 
     def _render_header(self) -> None:
         """

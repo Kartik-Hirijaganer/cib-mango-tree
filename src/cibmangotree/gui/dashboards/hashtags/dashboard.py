@@ -25,6 +25,7 @@ from cibmangotree.analyzers.hashtags.hashtags_base.interface import (
     SECONDARY_COL_USERS_ALL,
 )
 from cibmangotree.gui.session import GuiSession
+from cibmangotree.gui.theme import CHART_HIGHLIGHT
 
 from ..base_dashboard import BaseDashboardPage
 from .data import (
@@ -154,7 +155,7 @@ class HashtagsDashboardPage(BaseDashboardPage):
                             "silent": True,
                             "symbol": "none",
                             "animation": False,
-                            "lineStyle": {"color": "#d62728", "width": 2},
+                            "lineStyle": {"color": CHART_HIGHLIGHT, "width": 2},
                             "label": {
                                 "position": "end",
                                 "distance": 10,

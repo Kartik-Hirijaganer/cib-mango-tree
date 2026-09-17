@@ -5,6 +5,7 @@ from nicegui import ui
 from cibmangotree.app.analysis_context import AnalysisContext
 from cibmangotree.gui.components.analysis_utils import present_timestamp
 from cibmangotree.gui.session import GuiSession
+from cibmangotree.gui.theme import TEXT_MUTED
 
 
 class ManageAnalysisDialog(ui.dialog):
@@ -41,7 +42,7 @@ class ManageAnalysisDialog(ui.dialog):
 
             # Check if there are analyses to display
             if not self.analysis_contexts:
-                ui.label("No analyses found").classes("text-grey q-mb-md")
+                ui.label("No analyses found").classes(f"{TEXT_MUTED} q-mb-md")
             else:
                 # Analyses grid — multiRow selection enabled
                 self.grid = ui.aggrid(

@@ -6,6 +6,7 @@ from cibmangotree.analyzer_interface import (
     get_data_type_compatibility_score,
 )
 from cibmangotree.gui.session import GuiSession
+from cibmangotree.gui.theme import ICON_INFO, TEXT_MUTED
 
 
 class ColumnMappingStep:
@@ -23,11 +24,11 @@ class ColumnMappingStep:
         project = self.session.current_project
 
         if not analyzer:
-            ui.label("Please select an analyzer first").classes("text-grey")
+            ui.label("Please select an analyzer first").classes(TEXT_MUTED)
             return
 
         if not project:
-            ui.label("No project selected").classes("text-grey")
+            ui.label("No project selected").classes(TEXT_MUTED)
             return
 
         input_columns = analyzer.input.columns
@@ -63,7 +64,7 @@ class ColumnMappingStep:
                     "text-bold"
                 )
                 if input_col.description:
-                    with ui.icon("info").classes("text-grey-6 cursor-pointer"):
+                    with ui.icon("info").classes(ICON_INFO):
                         ui.tooltip(input_col.description)
 
             compatible_columns = [

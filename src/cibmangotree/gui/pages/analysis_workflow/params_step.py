@@ -8,6 +8,7 @@ from cibmangotree.context import (
 )
 from cibmangotree.gui.components import AnalysisParamsCard
 from cibmangotree.gui.session import GuiSession
+from cibmangotree.gui.theme import TEXT_MUTED
 
 
 class ParamsConfigStep:
@@ -26,7 +27,7 @@ class ParamsConfigStep:
         column_mapping = self.session.column_mapping
 
         if not analyzer:
-            ui.label("Please select an analyzer first").classes("text-grey")
+            ui.label("Please select an analyzer first").classes(TEXT_MUTED)
             return
 
         if not analyzer.params:
@@ -37,7 +38,7 @@ class ParamsConfigStep:
             return
 
         if not project or not column_mapping:
-            ui.label("Please map columns first").classes("text-grey")
+            ui.label("Please map columns first").classes(TEXT_MUTED)
             return
 
         with TemporaryDirectory() as temp_dir:

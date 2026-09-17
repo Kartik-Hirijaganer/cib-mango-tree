@@ -5,6 +5,8 @@ MANGO_ORANGE = "#f3921e"
 MANGO_ORANGE_LIGHT = "#f9bc30"
 ACCENT = "white"
 CANCEL_RED = "#d32f2f"
+PAGE_BACKGROUND = "#ffffff"
+CHART_HIGHLIGHT = "#d62728"
 
 
 class GuiColors(BaseModel):
@@ -58,3 +60,25 @@ class GuiConstants(BaseModel):
 gui_colors = GuiColors()
 gui_urls = GuiURLS()
 gui_constants = GuiConstants(colors=gui_colors, urls=gui_urls)
+
+# --- Class-string constants (NiceGUI .classes()) -------------------------
+
+CARD_FLAT = "shadow-none border border-gray-200"
+CARD_CONTENT = f"w-full p-4 {CARD_FLAT}"
+CARD_PARAM = f"w-72 p-4 {CARD_FLAT}"
+
+ROW_LAYOUT = "w-full items-center gap-2 mb-2"
+ROW_ACTIONS = "w-full justify-end gap-2"
+ROW_LABEL_ICON = "items-center gap-1"
+
+TEXT_MUTED = "text-grey-8"
+TEXT_HEADING = "text-h6"
+TEXT_SECTION_HEADING = f"{TEXT_HEADING} mb-4"
+TEXT_TOOLTIP_BODY = "text-base leading-relaxed whitespace-normal"
+TEXT_FIELD_LABEL = "text-base font-bold"
+ICON_INFO = "text-grey-7 cursor-pointer"
+
+# --- Inline style constants (NiceGUI .style()) ---------------------------
+
+STYLE_CENTERED = "max-width: 960px; margin: 0 auto;"
+STYLE_LABEL_GUTTER = "min-width: 160px"

@@ -5,6 +5,7 @@ Placeholder dashboard shown when an analyzer has no dashboard yet.
 from nicegui import ui
 
 from cibmangotree.gui.session import GuiSession
+from cibmangotree.gui.theme import TEXT_MUTED
 
 from ..base_dashboard import BaseDashboardPage
 
@@ -22,7 +23,7 @@ class PlaceholderDashboard(BaseDashboardPage):
             .style("height: 80vh; width: 100%")
         ):
             ui.icon("bar_chart", size="4rem").classes("text-grey-5")
-            ui.label("Dashboard coming soon").classes("text-h6 text-grey-6 q-mt-md")
+            ui.label("Dashboard coming soon").classes(f"text-h6 {TEXT_MUTED} q-mt-md")
             ui.label(
                 "A results dashboard for this analyzer is not yet available."
-            ).classes("text-grey-5")
+            ).classes(TEXT_MUTED)
