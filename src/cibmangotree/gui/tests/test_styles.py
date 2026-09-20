@@ -4,19 +4,20 @@ Guard for the styling conventions in `gui.theme`.
 Two things are checked:
 
 1. **No retired spellings** in the files migrated to the shared constants. The
-   scan walks `.classes()` / `.style()` call arguments in the AST rather than
-   searching raw text, so `theme.py` legitimately *defining* a value and this
-   module legitimately *listing* the retired spellings do not trip it.
+   scan is `gui._style_rules`, which walks `.classes()` / `.style()` call
+   arguments in the AST rather than searching raw text, so `theme.py`
+   legitimately *defining* a value does not trip it. That module also carries the
+   rule tables and the `--fix` tool; this file is the pytest half of the same
+   convention, and the only place the guarded file list lives.
 2. **The migrated screens actually render with the constants.** The existing
    tests for both screens stop at an early return before any styled element is
    built, so they stay green even with the migration broken.
 
-`GUARDED_FILES` widens one directory at a time as the sweep progresses.
 """
 
 from __future__ import annotations
 
-import ast
+import re
 from datetime import datetime
 from pathlib import Path
 from unittest.mock import MagicMock
@@ -40,6 +41,12 @@ from cibmangotree.analyzers.ngrams.ngrams_stats.interface import (
     COL_NGRAM_WORDS,
 )
 from cibmangotree.gui import theme
+from cibmangotree.gui._style_rules import (
+    BLOCKING,
+    RETIRED_CLASS_TOKENS,
+    in_scope,
+    scan_source,
+)
 from cibmangotree.gui.components.analysis import AnalysisParamsCard
 from cibmangotree.gui.dashboards.hashtags.plots import plot_gini_echart
 from cibmangotree.gui.dashboards.ngrams.plots import plot_scatter_echart
@@ -55,96 +62,80 @@ from cibmangotree.gui.theme import (
 
 GUI_ROOT = Path(theme.__file__).parent
 
-#: Files migrated to the shared constants, and therefore guarded. Not repo-wide:
-#: the remaining GUI files are legitimately unmigrated until the sweep reaches
-#: them.
-GUARDED_FILES = [
-    GUI_ROOT / "components" / "analysis.py",
-    GUI_ROOT / "pages" / "analysis_workflow" / "run_step.py",
-]
-
-#: Retired class tokens mapped to what replaces them. Quasar spellings of
-#: concerns Tailwind owns, plus `text-medium`, which neither framework defines.
-RETIRED_CLASS_TOKENS = {
-    "text-grey": "TEXT_MUTED",
-    "text-grey-5": "TEXT_MUTED",
-    "text-grey-6": "TEXT_MUTED (or ICON_INFO on an info affordance)",
-    "text-grey-7": "TEXT_MUTED (or ICON_INFO on an info affordance)",
-    "text-gray-500": "TEXT_MUTED",
-    "text-gray-600": "TEXT_MUTED",
-    "text-medium": "font-medium — `text-medium` is dead CSS in both frameworks",
-    "no-shadow": "shadow-none",
-    "text-bold": "font-bold",
-    "text-weight-bold": "font-bold",
-    "text-weight-medium": "font-medium",
-    "q-mb-xs": "mb-1",
-    "q-mb-sm": "mb-2",
-    "q-mb-md": "mb-4",
-    "q-mb-lg": "mb-6",
-    "q-mt-xs": "mt-1",
-    "q-mt-sm": "mt-2",
-    "q-mt-md": "mt-4",
-    "q-pa-md": "p-4",
-}
-
-#: CSS declarations that now have a named constant.
-RETIRED_STYLE_DECLARATIONS = {
-    "max-width: 960px": "STYLE_CENTERED",
-    "min-width: 160px": "STYLE_LABEL_GUTTER",
-}
+#: The sweep is finished, so this is the whole GUI package. `in_scope` drops
+#: `gui/tests/` along with `theme.py` and `_style_rules.py`, which legitimately
+#: contain the spellings the convention retires — one defines them, the other
+#: names them.
+GUARDED = [GUI_ROOT]
 
 
-def _style_literals(source: str) -> list[tuple[int, str, str]]:
-    """Yield `(lineno, method, literal)` for `.classes()` / `.style()` arguments.
-
-    Literal parts of f-strings are included, so a partially composed string such
-    as `f"{TEXT_MUTED} q-mb-md"` is still inspected.
-    """
-    found: list[tuple[int, str, str]] = []
-    for node in ast.walk(ast.parse(source)):
-        if not isinstance(node, ast.Call):
-            continue
-        if not isinstance(node.func, ast.Attribute):
-            continue
-        if node.func.attr not in ("classes", "style"):
-            continue
-        for arg in [*node.args, *(kw.value for kw in node.keywords)]:
-            parts = arg.values if isinstance(arg, ast.JoinedStr) else [arg]
-            for part in parts:
-                if isinstance(part, ast.Constant) and isinstance(part.value, str):
-                    found.append((part.lineno, node.func.attr, part.value))
-    return found
+def guarded_files() -> list[Path]:
+    """Expand `GUARDED` to the Python files the tool would actually look at."""
+    return sorted(
+        {
+            found
+            for path in GUARDED
+            for found in ([path] if path.is_file() else path.rglob("*.py"))
+            if in_scope(found)
+        }
+    )
 
 
 def scan(paths: list[Path]) -> list[str]:
-    """Report every retired spelling reaching a `.classes()` / `.style()` call."""
-    problems: list[str] = []
-    for path in paths:
-        for lineno, method, literal in _style_literals(
-            path.read_text(encoding="utf-8")
-        ):
-            where = f"{path.name}:{lineno}"
-            if method == "classes":
-                for token in literal.split():
-                    if token in RETIRED_CLASS_TOKENS:
-                        problems.append(
-                            f"{where}  `{token}` is retired — "
-                            f"use {RETIRED_CLASS_TOKENS[token]}"
-                        )
-            else:
-                for declaration, constant in RETIRED_STYLE_DECLARATIONS.items():
-                    if declaration in literal:
-                        problems.append(
-                            f"{where}  `{declaration}` is retired — use {constant}"
-                        )
-    return problems
+    """Report every convention violation reaching a `.classes()` / `.style()` call.
+
+    Advice — "this literal already has a constant" — is deliberately not a
+    violation, so a pull request about something else is never blocked by it.
+    """
+    return [
+        finding.render(GUI_ROOT.parent)
+        for path in paths
+        for finding in scan_source(path.read_text(encoding="utf-8"), path)
+        if finding.level in BLOCKING
+    ]
 
 
 # --- The guard -----------------------------------------------------------
 
 
-def test_migrated_files_contain_no_retired_spellings() -> None:
-    assert scan(GUARDED_FILES) == []
+def test_the_whole_gui_contains_no_retired_spellings() -> None:
+    """The end of the sweep: not a sample, the entire package."""
+    assert scan(guarded_files()) == []
+
+
+def test_the_guard_actually_reaches_every_gui_module() -> None:
+    """An empty scan would also pass if `GUARDED` resolved to nothing."""
+    covered = guarded_files()
+    names = {path.name for path in covered}
+
+    assert len(covered) > 40, f"only {len(covered)} files guarded"
+    assert {"base.py", "run_step.py", "export_outputs.py"} <= names
+    assert not {"theme.py", "_style_rules.py"} & names
+    assert not any("tests" in path.parts for path in covered)
+
+
+def test_the_guard_covers_what_the_hook_covers() -> None:
+    """The hook's `files:` pattern and `GUARDED` widen together, or the two
+    halves of the convention drift apart."""
+    config = (GUI_ROOT.parent.parent.parent / ".pre-commit-config.yaml").read_text()
+    patterns = [
+        line.split("files:", 1)[1].strip()
+        for line in config.splitlines()
+        if line.strip().startswith("files:")
+    ]
+
+    assert patterns, "the gui-styles hook has no files: pattern"
+    covered = [
+        path
+        for path in guarded_files()
+        if any(
+            re.match(pattern, str(path.relative_to(GUI_ROOT.parent.parent.parent)))
+            for pattern in patterns
+        )
+    ]
+    uncovered = set(guarded_files()) - set(covered)
+
+    assert uncovered == set(), "pytest guards files the hook does not"
 
 
 def test_scan_reports_a_reintroduced_spelling(tmp_path: Path) -> None:
@@ -160,8 +151,8 @@ def test_scan_reports_a_reintroduced_spelling(tmp_path: Path) -> None:
 
     assert len(problems) == 3
     assert any("`text-grey` is retired" in p for p in problems)
-    assert any("`q-mb-md` is retired" in p for p in problems)
-    assert any("`max-width: 960px` is retired" in p for p in problems)
+    assert any("`q-mb-md` -> `mb-4`" in p for p in problems)
+    assert any("`max-width: 960px` has a constant" in p for p in problems)
 
 
 # --- The migrated screens actually render with the constants -------------

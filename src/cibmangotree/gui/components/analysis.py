@@ -9,6 +9,7 @@ from cibmangotree.analyzer_interface import (
 from cibmangotree.gui.theme import (
     CARD_PARAM,
     ICON_INFO,
+    ROW_CENTERED,
     ROW_LABEL_ICON,
     TEXT_MUTED,
 )
@@ -44,7 +45,7 @@ class AnalysisParamsCard:
     def _build_card(self):
         """Build the parameter configuration cards in a flex-wrap row."""
         if not self.params:
-            with ui.column().classes("w-full items-center"):
+            with ui.column().classes(ROW_CENTERED):
                 ui.label("This analyzer has no configurable parameters.").classes(
                     TEXT_MUTED
                 )

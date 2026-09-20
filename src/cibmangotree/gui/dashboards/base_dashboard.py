@@ -153,7 +153,7 @@ class BaseDashboardPage(GuiPage, abc.ABC):
         )
         with loading_container:
             ui.spinner("pie", size="xl")
-            ui.label("Loading dashboard...").classes(f"{TEXT_MUTED} q-mt-md")
+            ui.label("Loading dashboard...").classes(f"{TEXT_MUTED} mt-4")
 
         content_container = (
             ui.column().classes("w-full").style(f"height: {height}; display: none;")
@@ -175,7 +175,7 @@ class BaseDashboardPage(GuiPage, abc.ABC):
         loading_container.clear()
         with loading_container:
             ui.icon("error_outline", size="3rem").classes("text-negative")
-            ui.label(message).classes("text-negative q-mt-md")
+            ui.label(message).classes("text-negative mt-4")
 
     @abc.abstractmethod
     def render_content(self) -> None:

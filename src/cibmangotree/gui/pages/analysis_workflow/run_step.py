@@ -11,10 +11,12 @@ from cibmangotree.gui.routes import gui_routes
 from cibmangotree.gui.session import GuiSession
 from cibmangotree.gui.theme import (
     CARD_CONTENT,
+    COL_STACK,
     MANGO_DARK_GREEN,
     MANGO_ORANGE,
     STYLE_CENTERED,
     TEXT_MUTED,
+    TEXT_STEP_TITLE,
 )
 
 QUEUE_POLL_INTERVAL = 0.05
@@ -46,7 +48,7 @@ class RunAnalysisStep:
             return
 
         with ui.column().classes("w-full items-center gap-6").style(STYLE_CENTERED):
-            ui.label("Configuration Summary").classes("text-lg font-bold mb-4")
+            ui.label("Configuration Summary").classes(TEXT_STEP_TITLE)
 
             with ui.card().classes(CARD_CONTENT):
                 with ui.column().classes("gap-2"):
@@ -125,9 +127,9 @@ class RunAnalysisStep:
                 .style(f"color: {MANGO_ORANGE}")
             )
 
-            step_list_container = ui.column().classes("w-full gap-1 mt-4")
+            step_list_container = ui.column().classes(f"{COL_STACK} mt-4")
 
-            log_container = ui.column().classes("w-full gap-1 mt-2")
+            log_container = ui.column().classes(f"{COL_STACK} mt-2")
 
             with ui.row().classes("gap-4 mt-4"):
                 cancel_btn = ui.button(

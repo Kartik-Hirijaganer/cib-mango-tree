@@ -181,9 +181,6 @@ over:
 
 Both may produce the same result, but consistent ordering makes duplicate and near-duplicate patterns easier to identify.
 
-## Charts and plots
-
-TODO: Add shared conventions for chart colours, typography, spacing, and reusable plot styles.
 
 ## Before opening a PR
 
@@ -210,6 +207,7 @@ Then run the test suite:
 uv run pytest
 ```
 
-`src/cibmangotree/gui/tests/test_styles.py` checks `.classes()` and `.style()` usage in migrated files and reports retired styling patterns together with their expected replacements.
+`src/cibmangotree/gui/tests/test_styles.py` checks `.classes()` and `.style()` usage and reports retired styling patterns together with their expected replacements.
 
 [theme]: https://github.com/civictechdc/cib-mango-tree/blob/main/src/cibmangotree/gui/theme.py
+[rules]: https://github.com/civictechdc/cib-mango-tree/blob/main/src/cibmangotree/gui/_style_rules.py

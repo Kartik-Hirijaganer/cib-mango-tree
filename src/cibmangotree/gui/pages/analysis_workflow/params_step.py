@@ -8,7 +8,11 @@ from cibmangotree.context import (
 )
 from cibmangotree.gui.components import AnalysisParamsCard
 from cibmangotree.gui.session import GuiSession
-from cibmangotree.gui.theme import TEXT_MUTED
+from cibmangotree.gui.theme import (
+    STYLE_CENTERED,
+    TEXT_MUTED,
+    TEXT_STEP_TITLE,
+)
 
 
 class ParamsConfigStep:
@@ -32,7 +36,7 @@ class ParamsConfigStep:
 
         if not analyzer.params:
             ui.label("This analyzer has no configurable parameters.").classes(
-                "text-grey-7"
+                TEXT_MUTED
             )
             self.session.analysis_params = {}
             return
@@ -79,14 +83,8 @@ class ParamsConfigStep:
 
             self._param_values = param_values
 
-        with (
-            ui.column()
-            .classes("w-full items-center gap-6")
-            .style("max-width: 960px; margin: 0 auto;")
-        ):
-            ui.label(f"Configure {analyzer.name} Parameters").classes(
-                "text-lg font-bold mb-4"
-            )
+        with ui.column().classes("w-full items-center gap-6").style(STYLE_CENTERED):
+            ui.label(f"Configure {analyzer.name} Parameters").classes(TEXT_STEP_TITLE)
 
             self.params_card = AnalysisParamsCard(
                 params=analyzer.params, default_values=self._param_values

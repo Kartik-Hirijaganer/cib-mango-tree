@@ -2,7 +2,10 @@ from nicegui import ui
 
 from cibmangotree.gui.components.toggle import ToggleButtonGroup
 from cibmangotree.gui.session import GuiSession
-from cibmangotree.gui.theme import TEXT_MUTED
+from cibmangotree.gui.theme import (
+    ROW_CENTERED,
+    TEXT_MUTED,
+)
 
 
 class AnalyzerSelectionStep:
@@ -30,7 +33,7 @@ class AnalyzerSelectionStep:
 
         self.button_group = ToggleButtonGroup()
 
-        with ui.column().classes("items-center w-full"):
+        with ui.column().classes(ROW_CENTERED):
             with ui.element().classes("w-[64rem] max-w-full"):
                 with ui.row().classes("items-center justify-center gap-4 w-full"):
                     for analyzer_name in analyzer_options.keys():

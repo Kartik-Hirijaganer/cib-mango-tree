@@ -18,7 +18,13 @@ from pydantic import BaseModel, ConfigDict
 from cibmangotree.gui.components.exit_confirmation import ExitConfirmationDialog
 from cibmangotree.gui.routes import gui_routes
 from cibmangotree.gui.session import GuiSession
-from cibmangotree.gui.theme import PAGE_BACKGROUND, gui_colors, gui_urls
+from cibmangotree.gui.theme import (
+    PAGE_BACKGROUND,
+    ROW_CENTERED,
+    TEXT_HEADING,
+    gui_colors,
+    gui_urls,
+)
 from cibmangotree.meta.get_version import get_version
 
 
@@ -176,7 +182,7 @@ class GuiPage(BaseModel, abc.ABC):
                         ui.button(**btn_kwargs).props("flat")
 
                 # Center: Title
-                ui.label(self.title).classes("text-h6")
+                ui.label(self.title).classes(TEXT_HEADING)
 
                 # Right: Home button (if not on home page)
                 with ui.element("div").classes("flex items-center"):
@@ -247,17 +253,13 @@ class GuiPage(BaseModel, abc.ABC):
         - Right: External links (GitHub, Instagram)
         """
         with ui.footer(elevated=True):
-            with (
-                ui.row()
-                .classes("w-full items-center")
-                .style("justify-content: space-between")
-            ):
+            with ui.row().classes(ROW_CENTERED).style("justify-content: space-between"):
                 # Left: License
                 with ui.element("div").classes("flex items-center"):
                     version = get_version()
                     version_str = f"{version}" if version else "dev"
                     ui.label("MIT License · " + version_str).classes(
-                        "text-sm text-bold"
+                        "text-sm font-bold"
                     )
 
                 # Center: Project attribution
@@ -270,7 +272,7 @@ class GuiPage(BaseModel, abc.ABC):
                                 self._load_svg_icon("cibmt_logo"), sanitize=False
                             ).classes("size-5")
                         ui.tooltip("Visit cibmangotree.org")
-                    ui.label("A Civic Tech DC Project").classes("text-sm text-bold")
+                    ui.label("A Civic Tech DC Project").classes("text-sm font-bold")
 
                 # Right: External links
                 self._render_footer_links()
