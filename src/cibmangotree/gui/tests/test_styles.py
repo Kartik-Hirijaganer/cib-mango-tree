@@ -61,6 +61,7 @@ from cibmangotree.gui.theme import (
 )
 
 GUI_ROOT = Path(theme.__file__).parent
+REPO_ROOT = GUI_ROOT.parents[2]
 
 #: The sweep is finished, so this is the whole GUI package. `in_scope` drops
 #: `gui/tests/` along with `theme.py` and `_style_rules.py`, which legitimately
@@ -88,7 +89,7 @@ def scan(paths: list[Path]) -> list[str]:
     violation, so a pull request about something else is never blocked by it.
     """
     return [
-        finding.render(GUI_ROOT.parent)
+        finding.render(REPO_ROOT)
         for path in paths
         for finding in scan_source(path.read_text(encoding="utf-8"), path)
         if finding.level in BLOCKING
@@ -117,7 +118,7 @@ def test_the_guard_actually_reaches_every_gui_module() -> None:
 def test_the_guard_covers_what_the_hook_covers() -> None:
     """The hook's `files:` pattern and `GUARDED` widen together, or the two
     halves of the convention drift apart."""
-    config = (GUI_ROOT.parent.parent.parent / ".pre-commit-config.yaml").read_text()
+    config = (REPO_ROOT / ".pre-commit-config.yaml").read_text()
     patterns = [
         line.split("files:", 1)[1].strip()
         for line in config.splitlines()
@@ -129,7 +130,7 @@ def test_the_guard_covers_what_the_hook_covers() -> None:
         path
         for path in guarded_files()
         if any(
-            re.match(pattern, str(path.relative_to(GUI_ROOT.parent.parent.parent)))
+            re.match(pattern, path.relative_to(REPO_ROOT).as_posix())
             for pattern in patterns
         )
     ]
