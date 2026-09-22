@@ -1,5 +1,7 @@
 # Claude Code - Mango Tango CLI Integration
 
+Cross-agent project brief: @AGENTS.md. Cursor layout: `.cursor/rules/`, `.cursor/mcp.json`, `.cursor/skills/`.
+
 ## Project Context
 
 ### Core Documentation
