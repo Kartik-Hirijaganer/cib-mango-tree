@@ -1,10 +1,6 @@
 from nicegui import ui
 
 from cibmangotree.gui.session import GuiSession
-from cibmangotree.gui.theme import (
-    ROW_ACTIONS,
-    TEXT_SECTION_HEADING,
-)
 
 
 class NewProjectDialog(ui.dialog):
@@ -22,7 +18,7 @@ class NewProjectDialog(ui.dialog):
         self.session = session
 
         with self, ui.card().classes("w-96"):
-            ui.label("Create New Project").classes(TEXT_SECTION_HEADING)
+            ui.label("Create New Project").classes("text-h6 q-mb-md")
 
             self.name_input = ui.input(
                 label="Project Name",
@@ -32,7 +28,7 @@ class NewProjectDialog(ui.dialog):
                 },
             ).classes("w-full")
 
-            with ui.row().classes(f"{ROW_ACTIONS} mt-4"):
+            with ui.row().classes("w-full justify-end gap-2 mt-4"):
                 ui.button(
                     "Cancel",
                     on_click=self._handle_cancel,

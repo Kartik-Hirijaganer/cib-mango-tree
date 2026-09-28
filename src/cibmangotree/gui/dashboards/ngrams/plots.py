@@ -19,7 +19,6 @@ from cibmangotree.analyzers.ngrams.ngrams_stats.interface import (
     COL_NGRAM_TOTAL_REPS,
     COL_NGRAM_WORDS,
 )
-from cibmangotree.gui.theme import CHART_HIGHLIGHT
 
 TAB_10_PALETTE = [
     "#1f77b4",
@@ -125,7 +124,7 @@ def plot_scatter_echart(
             },
             "emphasis": {
                 "itemStyle": {
-                    "color": CHART_HIGHLIGHT,
+                    "color": "#d62728",
                     "opacity": 1.0,
                     "borderColor": "white",
                     "borderWidth": 1,

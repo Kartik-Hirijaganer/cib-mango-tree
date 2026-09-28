@@ -6,15 +6,6 @@ from cibmangotree.analyzer_interface import (
     get_data_type_compatibility_score,
 )
 from cibmangotree.gui.session import GuiSession
-from cibmangotree.gui.theme import (
-    CARD_FLAT,
-    ICON_INFO,
-    ROW_LABEL_ICON,
-    STYLE_CENTERED,
-    STYLE_LABEL_GUTTER,
-    TEXT_MUTED,
-    TEXT_STEP_TITLE,
-)
 
 
 class ColumnMappingStep:
@@ -32,11 +23,11 @@ class ColumnMappingStep:
         project = self.session.current_project
 
         if not analyzer:
-            ui.label("Please select an analyzer first").classes(TEXT_MUTED)
+            ui.label("Please select an analyzer first").classes("text-grey")
             return
 
         if not project:
-            ui.label("No project selected").classes(TEXT_MUTED)
+            ui.label("No project selected").classes("text-grey")
             return
 
         input_columns = analyzer.input.columns
@@ -44,8 +35,12 @@ class ColumnMappingStep:
 
         draft_column_mapping = column_automap(user_columns, input_columns)
 
-        with ui.column().classes("w-full items-center gap-6").style(STYLE_CENTERED):
-            ui.label("Map Your Data Columns").classes(TEXT_STEP_TITLE)
+        with (
+            ui.column()
+            .classes("w-full items-center gap-6")
+            .style("max-width: 960px; margin: 0 auto;")
+        ):
+            ui.label("Map Your Data Columns").classes("text-lg font-bold mb-4")
 
             with ui.row().classes("flex-wrap gap-6 justify-center w-full"):
                 for input_col in input_columns:
@@ -60,15 +55,15 @@ class ColumnMappingStep:
         """Build a single column mapping card."""
         with (
             ui.card()
-            .classes(f"p-4 {CARD_FLAT}")
-            .style(f"flex: 1 1 0; {STYLE_LABEL_GUTTER}")
+            .classes("p-4 no-shadow border border-gray-200")
+            .style("flex: 1 1 0; min-width: 160px")
         ):
-            with ui.row().classes(ROW_LABEL_ICON):
+            with ui.row().classes("items-center gap-1"):
                 ui.label(input_col.human_readable_name_or_fallback()).classes(
-                    "font-bold"
+                    "text-bold"
                 )
                 if input_col.description:
-                    with ui.icon("info").classes(ICON_INFO):
+                    with ui.icon("info").classes("text-grey-6 cursor-pointer"):
                         ui.tooltip(input_col.description)
 
             compatible_columns = [
@@ -148,7 +143,7 @@ class ColumnMappingStep:
                 if len(preview_df) > 5
                 else "Data Preview (all rows)"
             )
-            ui.label(preview_title).classes(f"text-sm {TEXT_MUTED}")
+            ui.label(preview_title).classes("text-sm text-grey-7")
 
             grid = ui.aggrid.from_polars(
                 preview_df,

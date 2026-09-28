@@ -23,10 +23,6 @@ from cibmangotree.analyzers.ngrams.ngrams_stats.interface import (
     interface as ngram_stats_interface,
 )
 from cibmangotree.gui.session import GuiSession
-from cibmangotree.gui.theme import (
-    TEXT_HEADING,
-    TEXT_HINT,
-)
 
 from ..base_dashboard import BaseDashboardPage
 from .data import filter_ngrams_by_text, make_detail_columns, make_summary_columns
@@ -395,10 +391,10 @@ class NgramsDashboardPage(BaseDashboardPage):
 
         if total > 100_000:
             with ui.dialog() as dialog, ui.card():
-                ui.label(f"Load all {total:,} data points?").classes(TEXT_HEADING)
+                ui.label(f"Load all {total:,} data points?").classes("text-h6")
                 ui.label(
                     "This may cause the browser to slow down or become unresponsive."
-                ).classes(TEXT_HINT)
+                ).classes("text-body2 text-grey-7")
                 with ui.row().classes("gap-4 justify-end"):
                     ui.button("Cancel", on_click=dialog.close).props("flat")
 
@@ -471,7 +467,7 @@ class NgramsDashboardPage(BaseDashboardPage):
             }
         """)
         with ui.row().classes("w-full justify-center"):
-            with ui.column().classes("w-3/4 p-4 gap-4"):
+            with ui.column().classes("w-3/4 q-pa-md gap-4"):
                 with ui.card().classes("w-full"):
                     self._ngram_select = (
                         ui.input(
@@ -496,7 +492,9 @@ class NgramsDashboardPage(BaseDashboardPage):
                         )
 
                 with ui.row().classes("w-full items-center gap-4"):
-                    self._sampling_label = ui.label("").classes(TEXT_HINT)
+                    self._sampling_label = ui.label("").classes(
+                        "text-body2 text-grey-7"
+                    )
                     self._show_all_btn = ui.button(
                         "Show all data",
                         on_click=self._handle_show_all_click,
@@ -506,9 +504,9 @@ class NgramsDashboardPage(BaseDashboardPage):
 
                 with ui.card().classes("w-full"):
                     with ui.card_section():
-                        ui.label("Data viewer").classes(TEXT_HEADING)
+                        ui.label("Data viewer").classes("text-h6")
                     self._info_label = ui.label("Loading data...").classes(
-                        f"{TEXT_HINT} mb-2"
+                        "text-body2 text-grey-7 q-mb-sm"
                     )
                     self._grid_loading, self._grid_content = (
                         self._create_loading_container("400px")

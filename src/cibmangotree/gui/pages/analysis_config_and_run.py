@@ -11,7 +11,6 @@ from cibmangotree.gui.pages.analysis_workflow import (
 )
 from cibmangotree.gui.routes import gui_routes
 from cibmangotree.gui.session import GuiSession
-from cibmangotree.gui.theme import ROW_CENTERED
 
 STEP_NAMES = {
     "Select Analyzer": "analyzer",
@@ -107,7 +106,7 @@ class AnalysisConfigAndRunPage(GuiPage):
     def _render_column_mapping_step(self) -> None:
         """Render Step 2: Column Mapping."""
         with ui.step("Map Columns", icon="pivot_table_chart"):
-            with ui.element().classes(f"pt-6 {ROW_CENTERED}"):
+            with ui.element().classes("pt-6 w-full items-center"):
                 self.steps["columns"] = ColumnMappingStep(self.session)
                 self.steps["columns"].render()
 
@@ -123,7 +122,7 @@ class AnalysisConfigAndRunPage(GuiPage):
     def _render_params_step(self) -> None:
         """Render Step 3: Parameter Configuration."""
         with ui.step("Configure Parameters", icon="tune"):
-            with ui.element().classes(f"pt-6 {ROW_CENTERED}"):
+            with ui.element().classes("pt-6 w-full items-center"):
                 self.steps["params"] = ParamsConfigStep(self.session)
                 self.steps["params"].render()
 
@@ -139,7 +138,7 @@ class AnalysisConfigAndRunPage(GuiPage):
     def _render_run_step(self) -> None:
         """Render Step 4: Run Analysis."""
         with ui.step("Run Analysis", icon="play_arrow"):
-            with ui.element().classes(f"pt-6 {ROW_CENTERED}"):
+            with ui.element().classes("pt-6 w-full items-center"):
                 self.steps["run"] = RunAnalysisStep(
                     session=self.session,
                     page=self,

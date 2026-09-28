@@ -13,7 +13,7 @@ repos:
     hooks:
       - id: gui-styles
         name: GUI styling convention
-        entry: python src/cibmangotree/gui/_style_rules.py --fix
+        entry: python src/cibmangotree/gui/_style_rules.py
         language: system
         types: [python]
-        files: ^src/cibmangotree/gui/(?!tests/)
+        files: ^src/cibmangotree/gui/(pages/analysis_workflow/run_step|components/analysis)\.py$

@@ -1,12 +1,6 @@
 from nicegui import ui
 
 from cibmangotree.gui.session import GuiSession
-from cibmangotree.gui.theme import (
-    ROW_ACTIONS,
-    TEXT_MUTED,
-    TEXT_SECTION_HEADING,
-    TEXT_WARNING_NOTE,
-)
 
 
 class ManageProjectsDialog(ui.dialog):
@@ -32,11 +26,11 @@ class ManageProjectsDialog(ui.dialog):
         # Build dialog UI
         with self, ui.card().classes("w-full"):
             # Dialog title
-            ui.label("Manage Projects").classes(TEXT_SECTION_HEADING)
+            ui.label("Manage Projects").classes("text-h6 q-mb-md")
 
             # Check if there are projects to display
             if not self.project_contexts:
-                ui.label("No projects found").classes(f"{TEXT_MUTED} mb-4")
+                ui.label("No projects found").classes("text-grey q-mb-md")
             else:
                 # Projects grid
                 self.grid = ui.aggrid(
@@ -58,7 +52,7 @@ class ManageProjectsDialog(ui.dialog):
                 ).classes("w-full h-96")
 
             # Action buttons
-            with ui.row().classes(f"{ROW_ACTIONS} mt-4"):
+            with ui.row().classes("w-full justify-end gap-2 mt-4"):
                 ui.button(
                     "Cancel",
                     on_click=self._handle_cancel,
@@ -121,10 +115,10 @@ class ManageProjectsDialog(ui.dialog):
         with ui.dialog() as dialog, ui.card():
             ui.label(
                 f"Are you sure you want to delete project '{project_name}' (ID: {project_id})?"
-            ).classes("mb-4")
-            ui.label("This action cannot be undone.").classes(TEXT_WARNING_NOTE)
+            ).classes("q-mb-md")
+            ui.label("This action cannot be undone.").classes("text-warning q-mb-lg")
 
-            with ui.row().classes(ROW_ACTIONS):
+            with ui.row().classes("w-full justify-end gap-2"):
                 ui.button(
                     "Cancel",
                     on_click=lambda: dialog.submit(False),

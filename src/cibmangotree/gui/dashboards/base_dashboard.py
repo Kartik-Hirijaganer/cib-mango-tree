@@ -19,7 +19,6 @@ from nicegui import run, ui
 from cibmangotree.gui.base import GuiPage
 from cibmangotree.gui.routes import gui_routes
 from cibmangotree.gui.session import GuiSession
-from cibmangotree.gui.theme import TEXT_MUTED
 
 if TYPE_CHECKING:
     import polars as pl
@@ -153,7 +152,7 @@ class BaseDashboardPage(GuiPage, abc.ABC):
         )
         with loading_container:
             ui.spinner("pie", size="xl")
-            ui.label("Loading dashboard...").classes(f"{TEXT_MUTED} mt-4")
+            ui.label("Loading dashboard...").classes("text-grey-6 q-mt-md")
 
         content_container = (
             ui.column().classes("w-full").style(f"height: {height}; display: none;")
@@ -175,7 +174,7 @@ class BaseDashboardPage(GuiPage, abc.ABC):
         loading_container.clear()
         with loading_container:
             ui.icon("error_outline", size="3rem").classes("text-negative")
-            ui.label(message).classes("text-negative mt-4")
+            ui.label(message).classes("text-negative q-mt-md")
 
     @abc.abstractmethod
     def render_content(self) -> None:

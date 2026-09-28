@@ -25,12 +25,6 @@ from cibmangotree.analyzers.hashtags.hashtags_base.interface import (
     SECONDARY_COL_USERS_ALL,
 )
 from cibmangotree.gui.session import GuiSession
-from cibmangotree.gui.theme import (
-    CHART_HIGHLIGHT,
-    ROW_CENTERED,
-    TEXT_HEADING,
-    TEXT_HINT,
-)
 
 from ..base_dashboard import BaseDashboardPage
 from .data import (
@@ -160,7 +154,7 @@ class HashtagsDashboardPage(BaseDashboardPage):
                             "silent": True,
                             "symbol": "none",
                             "animation": False,
-                            "lineStyle": {"color": CHART_HIGHLIGHT, "width": 2},
+                            "lineStyle": {"color": "#d62728", "width": 2},
                             "label": {
                                 "position": "end",
                                 "distance": 10,
@@ -530,9 +524,9 @@ class HashtagsDashboardPage(BaseDashboardPage):
             }
             """)
         with ui.row().classes("w-full justify-center"):
-            with ui.column().classes("w-3/4 p-4 gap-4"):
+            with ui.column().classes("w-3/4 q-pa-md gap-4"):
                 with ui.card().classes("w-full"):
-                    with ui.row().classes(ROW_CENTERED):
+                    with ui.row().classes("w-full items-center"):
                         self._smooth_checkbox = ui.checkbox(
                             "Show smoothed line",
                             value=False,
@@ -554,10 +548,10 @@ class HashtagsDashboardPage(BaseDashboardPage):
                 with ui.row().classes("w-full gap-4"):
                     with ui.card().classes("flex-1"):
                         with ui.card_section():
-                            ui.label("Hashtags").classes(TEXT_HEADING)
+                            ui.label("Hashtags").classes("text-h6")
                             self._hashtag_info = ui.label(
                                 "Click a point on the chart above to explore hashtags."
-                            ).classes(f"{TEXT_HINT} mb-2")
+                            ).classes("text-body2 text-grey-7 q-mb-sm")
                         self._hashtag_loading, self._hashtag_content = (
                             self._create_loading_container("300px")
                         )
@@ -588,10 +582,10 @@ class HashtagsDashboardPage(BaseDashboardPage):
 
                     with ui.card().classes("flex-1"):
                         with ui.card_section():
-                            ui.label("Users").classes(TEXT_HEADING)
+                            ui.label("Users").classes("text-h6")
                             self._user_info = ui.label(
                                 "Click a hashtag above to see which users posted it."
-                            ).classes(f"{TEXT_HINT} mb-2")
+                            ).classes("text-body2 text-grey-7 q-mb-sm")
                         self._user_loading, self._user_content = (
                             self._create_loading_container("300px")
                         )
@@ -620,10 +614,10 @@ class HashtagsDashboardPage(BaseDashboardPage):
 
                 with ui.card().classes("w-full"):
                     with ui.card_section():
-                        ui.label("Tweet Explorer").classes(TEXT_HEADING)
+                        ui.label("Tweet Explorer").classes("text-h6")
                         self._tweet_info = ui.label(
                             "Click a user above to see their posts."
-                        ).classes(f"{TEXT_HINT} mb-2")
+                        ).classes("text-body2 text-grey-7 q-mb-sm")
                     self._tweet_loading, self._tweet_content = (
                         self._create_loading_container("300px")
                     )
