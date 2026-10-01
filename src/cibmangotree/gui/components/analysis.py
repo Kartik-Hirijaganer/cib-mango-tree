@@ -10,7 +10,7 @@ from cibmangotree.gui.theme import (
     CARD_PARAM,
     ICON_INFO,
     ROW_CENTERED,
-    ROW_LABEL_ICON,
+    ROW_CENTERED_GAP,
     TEXT_MUTED,
 )
 
@@ -58,7 +58,7 @@ class AnalysisParamsCard:
     def _build_param_card(self, param: AnalyzerParam):
         """Build an individual card for a single parameter."""
         with ui.card().classes(CARD_PARAM):
-            with ui.row().classes(ROW_LABEL_ICON):
+            with ui.row().classes(ROW_CENTERED_GAP):
                 ui.label(param.print_name).classes("font-bold")
                 if param.description:
                     with ui.icon("info").classes(ICON_INFO):

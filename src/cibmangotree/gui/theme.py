@@ -66,7 +66,7 @@ CARD_CONTENT = f"w-full p-4 {CARD_FLAT}"
 CARD_PARAM = f"w-72 p-4 {CARD_FLAT}"
 
 ROW_CENTERED = "w-full items-center"
-ROW_LABEL_ICON = "items-center gap-1"
+ROW_CENTERED_GAP = "items-center gap-1"
 COL_STACK = "w-full gap-1"
 
 TEXT_MUTED = "text-grey-8"
