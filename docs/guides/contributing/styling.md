@@ -68,12 +68,34 @@ The guarded modules are listed in `GUARDED_PATHS` in `gui/_style_rules.py`.
 When a module is migrated, add it there and widen the hook's `files` pattern
 in `.pre-commit-config.yaml`. A test checks that the two scopes match.
 
-## Before opening a PR
+## Installing and running hooks
+
+Install the Git hooks once per clone:
+
+```bash
+uv run pre-commit install
+```
+
+This includes the local `gui-styles` hook. If the Git hooks are already installed,
+they pick up changes to `.pre-commit-config.yaml` automatically.
+
+Hooks run during `git commit`, before the commit is created, and check matching
+staged files. They do not run on `git push`. If the hooks pass during commits,
+you do not need to rerun them manually before opening a PR.
+
+You can also run the hooks manually to check all files they cover, including unchanged files. This is optional:
 
 ```bash
 uv run pre-commit run --all-files
-uv run pytest
 ```
 
 Formatting hooks may modify files; review their changes and rerun the checks.
 The styling hook reports violations for a contributor to fix by hand.
+
+## Testing before opening a PR
+
+The hooks do not run the test suite. Run it separately before opening a PR:
+
+```bash
+uv run pytest
+```
